@@ -138,7 +138,7 @@ const state = {
     hip: 95
   },
   settings: {
-    advancedMode: false,
+    advancedMode: true,
     imperialUnits: false,
     rememberInputs: true
   }
