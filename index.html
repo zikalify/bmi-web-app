@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <h1>BMI Calculator</h1>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <main class="main-content">
+      <section class="inputs-section">
+        <div class="card basic-inputs">
+          <h2>Inputs</h2>
+          <div class="input-group">
+            <label for="height">Height</label>
+            <div class="input-with-unit">
+              <input type="number" id="height" step="0.1" min="10" max="999" aria-label="Height">
+              <span class="unit" id="heightUnit">cm</span>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="weight">Weight</label>
+            <div class="input-with-unit">
+              <input type="number" id="weight" step="0.1" min="10" max="999" aria-label="Weight">
+              <span class="unit" id="weightUnit">kg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card advanced-inputs" id="advancedInputs" hidden>
+          <h2>Advanced Inputs</h2>
+          <div class="input-group">
+            <label for="gender">Gender</label>
+            <select id="gender" aria-label="Gender">
+              <option value="0">Average</option>
+              <option value="1">Female</option>
+              <option value="2">Male</option>
+            </select>
+            <p class="help-text">Biological gender. Affects healthy/unhealthy thresholds for Waist to Hip ratio.</p>
+          </div>
+          <div class="input-group">
+            <label for="age">Age (Years)</label>
+            <input type="number" id="age" min="18" max="150" step="1" aria-label="Age">
+            <p class="help-text">Affects healthy/unhealthy thresholds for Waist to Height ratio.</p>
+          </div>
+          <div class="input-group">
+            <label for="waist">Waist</label>
+            <div class="input-with-unit">
+              <input type="number" id="waist" step="0.1" min="10" max="999" aria-label="Waist">
+              <span class="unit" id="waistUnit">cm</span>
+            </div>
+            <p class="help-text">Affects Waist to Height ratio, Waist to Hip ratio and BRI.</p>
+          </div>
+          <div class="input-group">
+            <label for="hip">Hip</label>
+            <div class="input-with-unit">
+              <input type="number" id="hip" step="0.1" min="10" max="999" aria-label="Hip">
+              <span class="unit" id="hipUnit">cm</span>
+            </div>
+            <p class="help-text">Affects Waist to Hip ratio.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="results-section">
+        <div class="card results">
+          <h2>Results</h2>
+          <div class="result-grid" id="resultsGrid">
+            <article class="result-card" data-metric="bmi">
+              <header>
+                <h3>BMI</h3>
+                <button class="info-btn" aria-label="BMI info">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </button>
+              </header>
+              <div class="result-value" id="bmiValue">—</div>
+              <div class="result-feedback" id="bmiFeedback">Enter your height and weight</div>
+            </article>
+
+            <article class="result-card" data-metric="bri" hidden>
+              <header>
+                <h3>BRI</h3>
+                <button class="info-btn" aria-label="BRI info">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </button>
+              </header>
+              <div class="result-value" id="briValue">—</div>
+              <div class="result-feedback" id="briFeedback">Enter advanced inputs</div>
+            </article>
+
+            <article class="result-card" data-metric="whr" hidden>
+              <header>
+                <h3>Waist / Hip</h3>
+                <button class="info-btn" aria-label="WHR info">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </button>
+              </header>
+              <div class="result-value" id="whrValue">—</div>
+              <div class="result-feedback" id="whrFeedback">Enter advanced inputs</div>
+            </article>
+
+            <article class="result-card" data-metric="whtr" hidden>
+              <header>
+                <h3>Waist / Height</h3>
+                <button class="info-btn" aria-label="WHtR info">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </button>
+              </header>
+              <div class="result-value" id="whtrValue">—</div>
+              <div class="result-feedback" id="whtrFeedback">Enter advanced inputs</div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <dialog class="modal" id="infoModal">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2 id="modalTitle">Metric Info</h2>
+          <button class="close-btn" id="closeModal" aria-label="Close">&times;</button>
+        </header>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </dialog>
+
+    <div class="menu-dropdown" id="menuDropdown" hidden>
+      <button class="dropdown-item" id="preferencesBtn">Preferences</button>
+      <button class="dropdown-item" id="aboutBtn">About</button>
+    </div>
+  </div>
+
+  <dialog class="preferences-dialog" id="preferencesDialog">
+    <div class="dialog-content">
+      <header>
+        <h2>Preferences</h2>
+        <button class="close-btn" id="closePreferences" aria-label="Close">&times;</button>
+      </header>
+      <div class="prefs-content">
+        <fieldset>
+          <legend>General</legend>
+          <label class="toggle-label">
+            <input type="checkbox" id="advancedMode"> Advanced mode
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" id="imperialUnits"> Imperial units (ft/in, lb)
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" id="rememberInputs"> Remember inputs
+          </label>
+        </fieldset>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="about-dialog" id="aboutDialog">
+    <div class="dialog-content">
+      <header>
+        <h2>About BMI Calculator</h2>
+        <button class="close-btn" id="closeAbout" aria-label="Close">&times;</button>
+      </header>
+      <div class="about-content">
+        <p><strong>BMI Calculator</strong> - A web-based body health metrics calculator</p>
+        <p>Calculates BMI, BRI, Waist-to-Hip Ratio, and Waist-to-Height Ratio with health thresholds.</p>
+        <p>Based on the original GTK4 BMI application by Philipp Kosarev.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
