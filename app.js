@@ -125,8 +125,74 @@ const metricConfigs = {
     calc: (inputs) => calculate.whtr(inputs.waist, inputs.height),
     thresholds: (inputs) => whtrThresholds(inputs.age),
     context: null
+  },
+  healthScore: {
+    title: 'Health Score',
+    tooltip: 'Overall health assessment based on all metrics',
+    digits: 0,
+    calc: (inputs) => calculateHealthScore(inputs),
+    thresholds: () => healthScoreThresholds,
+    context: null
   }
 };
+
+function calculateHealthScore(inputs) {
+  const results = {};
+  Object.entries(metricConfigs).forEach(([key, config]) => {
+    if (key !== 'healthScore') {
+      results[key] = config.calc(inputs);
+    }
+  });
+
+  let score = 100;
+  let validMetrics = 0;
+
+  if (results.bmi !== null && !isNaN(results.bmi)) {
+    validMetrics++;
+    if (results.bmi < 16) score -= 30;
+    else if (results.bmi < 18.5) score -= 15;
+    else if (results.bmi < 25) score -= 0;
+    else if (results.bmi < 30) score -= 10;
+    else if (results.bmi < 35) score -= 20;
+    else if (results.bmi < 40) score -= 30;
+    else score -= 40;
+  }
+
+  if (results.bri !== null && !isNaN(results.bri)) {
+    validMetrics++;
+    if (results.bri < 3.41) score -= 10;
+    else if (results.bri < 4.45) score -= 5;
+    else if (results.bri < 5.46) score -= 0;
+    else if (results.bri < 6.91) score -= 15;
+    else score -= 25;
+  }
+
+  if (results.whr !== null && !isNaN(results.whr)) {
+    validMetrics++;
+    const overweightThreshold = calculate.whrOverweight(inputs.gender);
+    const obeseThreshold = calculate.whrObese(inputs.gender);
+    if (results.whr < overweightThreshold) score -= 0;
+    else if (results.whr < obeseThreshold) score -= 15;
+    else score -= 30;
+  }
+
+  if (results.whtr !== null && !isNaN(results.whtr)) {
+    validMetrics++;
+    const unhealthyThreshold = calculate.whtrUnhealthy(inputs.age);
+    if (results.whtr < 0.5) score -= 0;
+    else if (results.whtr < unhealthyThreshold) score -= 10;
+    else score -= 25;
+  }
+
+  return validMetrics > 0 ? Math.max(0, Math.min(100, Math.round(score))) : null;
+}
+
+const healthScoreThresholds = [
+  { text: 'Poor', value: 0, style: 'error' },
+  { text: 'Fair', value: 40, style: 'warning' },
+  { text: 'Good', value: 70, style: 'success' },
+  { text: 'Excellent', value: 90, style: 'info' }
+];
 
 const state = {
   inputs: {

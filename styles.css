@@ -277,6 +277,22 @@ select:focus {
   color: var(--light-blue);
 }
 
+.health-score-card {
+  grid-column: 1 / -1;
+  border: 2px solid var(--accent);
+}
+
+.health-score-card .result-value {
+  font-size: 3.5rem;
+  color: var(--accent);
+}
+
+@media (min-width: 480px) {
+  .health-score-card {
+    grid-column: 1 / -1;
+  }
+}
+
 .toast-container {
   position: fixed;
   bottom: 20px;
