@@ -36,15 +36,15 @@ const calculate = {
   whrOverweight(gender) {
     const thresholds = {
       [Gender.AVERAGE]: 0.85,
-      [Gender.FEMALE]: 0.8,
-      [Gender.MALE]: 0.9
+      [Gender.FEMALE]: 0.80,
+      [Gender.MALE]: 0.90
     };
     return thresholds[gender] ?? thresholds[Gender.AVERAGE];
   },
 
   whrObese(gender) {
     const thresholds = {
-      [Gender.AVERAGE]: 0.925,
+      [Gender.AVERAGE]: 0.90,
       [Gender.FEMALE]: 0.85,
       [Gender.MALE]: 1.0
     };
@@ -172,8 +172,8 @@ function calculateHealthScore(inputs) {
     const overweightThreshold = calculate.whrOverweight(inputs.gender);
     const obeseThreshold = calculate.whrObese(inputs.gender);
     if (results.whr < overweightThreshold) score -= 0;
-    else if (results.whr < obeseThreshold) score -= 15;
-    else score -= 30;
+    else if (results.whr < obeseThreshold) score -= 20;
+    else score -= 35;
   }
 
   if (results.whtr !== null && !isNaN(results.whtr)) {
